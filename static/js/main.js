@@ -119,12 +119,6 @@ function drawEdges() {
         const endX = consumerRect.left + consumerRect.width / 2 - containerRect.left;
         const endY = consumerRect.bottom - containerRect.top;
 
-        const consumerType = consumer.dataset.nodeType || "default";
-        const styleClass =
-            consumerType === "influence"   ? "edge-style-influence" :
-            consumerType === "composition" ? "edge-style-composition" :
-                                             "edge-style-default";
-
         for (const inp of inputs) {
             const source = cardById[inp.from];
             if (!source) continue;
@@ -132,6 +126,17 @@ function drawEdges() {
             // Exit point: top-center of source (upstream, deeper) card.
             const startX = sourceRect.left + sourceRect.width / 2 - containerRect.left;
             const startY = sourceRect.top - containerRect.top;
+
+            // Line style is determined by the upstream node's type:
+            // - influence upstream  -> dashed (loose, indirect association)
+            // - composition upstream -> solid (tight, direct association)
+            // - typeless (e.g. genesis): defaults to solid; in practice the
+            //   genesis is never an input to anything.
+            const sourceType = source.dataset.nodeType || "default";
+            const styleClass =
+                sourceType === "influence"   ? "edge-style-influence" :
+                sourceType === "composition" ? "edge-style-composition" :
+                                               "edge-style-default";
 
             // Cubic Bezier with control points pulled vertically for a soft S.
             const dy = endY - startY;
