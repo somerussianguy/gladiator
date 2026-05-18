@@ -119,6 +119,12 @@ function drawEdges() {
         const endX = consumerRect.left + consumerRect.width / 2 - containerRect.left;
         const endY = consumerRect.bottom - containerRect.top;
 
+        const consumerType = consumer.dataset.nodeType || "default";
+        const styleClass =
+            consumerType === "influence"   ? "edge-style-influence" :
+            consumerType === "composition" ? "edge-style-composition" :
+                                             "edge-style-default";
+
         for (const inp of inputs) {
             const source = cardById[inp.from];
             if (!source) continue;
@@ -139,10 +145,8 @@ function drawEdges() {
                 "d",
                 `M ${startX} ${startY} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${endX} ${endY}`
             );
-            path.setAttribute(
-                "class",
-                `edge edge-${inp.polarity === "depower" ? "depower" : "power"}`
-            );
+            const polarityClass = inp.polarity === "depower" ? "edge-depower" : "edge-power";
+            path.setAttribute("class", `edge ${polarityClass} ${styleClass}`);
             path.setAttribute(
                 "marker-end",
                 `url(#arrow-${inp.polarity === "depower" ? "depower" : "power"})`

@@ -73,6 +73,13 @@ body {
 #edge-overlay .edge-power   { stroke: var(--edge-power); }
 #edge-overlay .edge-depower { stroke: var(--edge-depower); }
 
+/* Line style is determined by the consumer node's type:
+   influence consumer  -> dashed (looser, more indirect association)
+   composition / typeless consumer -> solid (default; tighter association) */
+#edge-overlay .edge-style-influence { stroke-dasharray: 6 4; }
+#edge-overlay .edge-style-composition,
+#edge-overlay .edge-style-default { stroke-dasharray: none; }
+
 /* Cards keep their own stacking context so they sit at z-index 0,
    below the overlay arrowheads. */
 .node { position: relative; z-index: 1; }

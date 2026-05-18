@@ -43,6 +43,13 @@ Each node represents a quantity (a price, an indicator, etc.) and lives in `node
 
 **Edge polarity:** Each input has `polarity: "power"` (default) or `polarity: "depower"`. A power input pushes its consumer in the same direction; a depower input pushes the opposite way.
 
+**Visual conventions on the dashboard:**
+
+- **Card tint** comes from the node's `node_type`: influence = light blue, composition = light yellow, no type = uncolored.
+- **Edge color** comes from polarity: power = green, depower = red.
+- **Edge line style** comes from the *consumer* node's `node_type`: influence consumer = dashed (looser, more indirect association), composition consumer = solid (tighter, more direct), no type = solid (default).
+- **Arrows** point *into* the consumer (downstream node).
+
 To add a new node, edit `nodes.json` and (if needed) add a fetcher in `fetchers.py`. The server reloads the file on every request, so no restart needed.
 
 ## Setup (Windows)
