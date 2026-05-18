@@ -5,6 +5,7 @@ on each request, and renders them grouped by layer.
 """
 from __future__ import annotations
 
+import json
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
@@ -63,7 +64,19 @@ def index():
     graph = load_graph()
     refresh_node_values(graph)
     layers = sorted(graph.nodes_by_layer().items())
-    return render_template("index.html", layers=layers)
+    # Per-card JSON of input refs, used by the front-end to draw edges.
+    inputs_json = {
+        n.global_id: json.dumps([
+            {
+                "from": f"L{inp.node_layer}-N{inp.node_id}",
+                "polarity": inp.polarity,
+                "weight": inp.weight,
+            }
+            for inp in n.inputs
+        ])
+        for n in graph.nodes
+    }
+    return render_template("index.html", layers=layers, inputs_json=inputs_json)
 
 
 @app.route("/api/nodes")

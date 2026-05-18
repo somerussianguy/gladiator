@@ -15,6 +15,7 @@
     </header>
 
     <main class="container">
+        <svg id="edge-overlay" aria-hidden="true"></svg>
         {% for layer_num, nodes in layers %}
         <section class="layer">
             <div class="layer-label">Layer {{ layer_num }}</div>
@@ -22,7 +23,8 @@
                 {% for node in nodes %}
                 <article class="node {% if node.node_type %}node-type-{{ node.node_type }}{% endif %} {% if node.last_status == 'error' %}node-error{% endif %}"
                          data-global-id="{{ node.global_id }}"
-                         data-node-type="{{ node.node_type or '' }}">
+                         data-node-type="{{ node.node_type or '' }}"
+                         data-inputs="{{ inputs_json[node.global_id] | e }}">
                     <div class="node-header">
                         <span class="node-name">{{ node.name }}</span>
                         <span class="node-id">{{ node.global_id }}</span>

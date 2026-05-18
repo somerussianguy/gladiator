@@ -9,6 +9,8 @@
     --accent: #5b9dff;
     --ok: #4ade80;
     --error: #f87171;
+    --edge-power: #4ade80;
+    --edge-depower: #f87171;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,7 +48,34 @@ body {
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
+    position: relative;   /* anchor for #edge-overlay */
 }
+
+/* SVG overlay that draws edges between cards. Sits above the layer
+   sections so arrowheads are visible, but uses pointer-events: none
+   so clicks pass through to cards / prompt toggles below. */
+#edge-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: visible;
+}
+
+#edge-overlay .edge {
+    fill: none;
+    stroke-width: 1.75;
+    opacity: 0.85;
+}
+#edge-overlay .edge-power   { stroke: var(--edge-power); }
+#edge-overlay .edge-depower { stroke: var(--edge-depower); }
+
+/* Cards keep their own stacking context so they sit at z-index 0,
+   below the overlay arrowheads. */
+.node { position: relative; z-index: 1; }
 
 .layer {
     margin-bottom: 2rem;
