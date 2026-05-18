@@ -42,7 +42,7 @@ class InputRef:
     polarity: str = "power"
 
 
-ALLOWED_NODE_TYPES: set[str] = {"influence", "composition"}
+ALLOWED_NODE_TYPES: set[str] = {"influence", "composition", "genesis"}
 ALLOWED_POLARITIES: set[str] = {"power", "depower"}
 
 

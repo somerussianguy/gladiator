@@ -4,6 +4,7 @@
       "id": 1,
       "layer": 1,
       "name": "WTI Crude Oil",
+      "node_type": "genesis",
       "inputs": [
         {
           "node_id": 1,

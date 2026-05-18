@@ -143,9 +143,21 @@ body {
     color: #f4e8b0;
 }
 
+.node-type-genesis {
+    background: linear-gradient(180deg, var(--surface), rgba(196, 167, 231, 0.14));
+    border-color: rgba(196, 167, 231, 0.6);
+}
+.node-type-genesis:hover {
+    border-color: rgba(196, 167, 231, 0.95);
+}
+.node-type-genesis .node-name {
+    color: #d9c5ee;
+}
+
 /* Error state wins over type tint. */
 .node-error.node-type-influence,
-.node-error.node-type-composition {
+.node-error.node-type-composition,
+.node-error.node-type-genesis {
     background: linear-gradient(180deg, var(--surface), rgba(248,113,113,0.04));
     border-color: var(--error);
 }

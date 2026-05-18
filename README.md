@@ -36,7 +36,7 @@ Each node represents a quantity (a price, an indicator, etc.) and lives in `node
 - `inputs` — list of `{node_id, node_layer, weight, polarity}` pointing to upstream nodes
 - `data_source` — `{type, config}` matching a fetcher in `fetchers.py`, or `null` for aggregator nodes that don't fetch their own value
 - `wishlist` — notes for future work on this node
-- `node_type` *(optional)* — `"influence"` or `"composition"`, or omit/null for nodes where the distinction doesn't apply (e.g. the genesis node). Influence nodes render with a light-blue tint; composition nodes with a light-yellow tint.
+- `node_type` *(optional)* — `"influence"`, `"composition"`, or `"genesis"`. Drives the card tint on the dashboard: influence = light blue, composition = light yellow, genesis = light purple. Genesis is for root nodes (the central metric); influence and composition describe how a node relates to whatever consumes it.
 - `prompt` *(optional)* — an instruction string for an LLM that will eventually compute this node's value (e.g. by scouting its child nodes). Shown as a collapsible "prompt" section on the card. Not all nodes need one — raw data sources like price tickers typically don't. The LLM execution side isn't wired up yet; for now this just stores and displays the prompt.
 
 **Layer convention:** Layer 1 is the root metric (the central thing you care about). Layer 2 is its direct inputs. Layer N+1 is the direct inputs into layer N. Every input must be exactly one layer deeper than the node it feeds. The graph is a DAG by construction.
@@ -45,9 +45,9 @@ Each node represents a quantity (a price, an indicator, etc.) and lives in `node
 
 **Visual conventions on the dashboard:**
 
-- **Card tint** comes from the node's `node_type`: influence = light blue, composition = light yellow, no type = uncolored.
+- **Card tint** comes from the node's `node_type`: influence = light blue, composition = light yellow, genesis = light purple.
 - **Edge color** comes from polarity: power = green, depower = red.
-- **Edge line style** comes from the *upstream* (input) node's `node_type`: influence upstream = dashed (looser, more indirect association), composition upstream = solid (tighter, more direct), no type = solid (default; the genesis node will never be an input to anything).
+- **Edge line style** comes from the *upstream* (input) node's `node_type`: influence upstream = dashed (looser, more indirect association), composition upstream = solid (tighter, more direct). The genesis node is never an input to anything, so its style doesn't appear on edges.
 - **Arrows** point *into* the consumer (downstream node).
 
 To add a new node, edit `nodes.json` and (if needed) add a fetcher in `fetchers.py`. The server reloads the file on every request, so no restart needed.
