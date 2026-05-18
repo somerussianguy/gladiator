@@ -84,6 +84,36 @@ body {
     background: linear-gradient(180deg, var(--surface), rgba(248,113,113,0.04));
 }
 
+/* Node type tints. Light hues on dark theme = subtle wash + matching border. */
+.node-type-influence {
+    background: linear-gradient(180deg, var(--surface), rgba(173, 216, 230, 0.12));
+    border-color: rgba(173, 216, 230, 0.55);
+}
+.node-type-influence:hover {
+    border-color: rgba(173, 216, 230, 0.9);
+}
+.node-type-influence .node-name {
+    color: #cfe6f2;
+}
+
+.node-type-composition {
+    background: linear-gradient(180deg, var(--surface), rgba(255, 239, 153, 0.12));
+    border-color: rgba(255, 239, 153, 0.55);
+}
+.node-type-composition:hover {
+    border-color: rgba(255, 239, 153, 0.9);
+}
+.node-type-composition .node-name {
+    color: #f4e8b0;
+}
+
+/* Error state wins over type tint. */
+.node-error.node-type-influence,
+.node-error.node-type-composition {
+    background: linear-gradient(180deg, var(--surface), rgba(248,113,113,0.04));
+    border-color: var(--error);
+}
+
 .node-header {
     display: flex;
     justify-content: space-between;

@@ -25,6 +25,9 @@ class InputRef:
     weight: float = 1.0   # relative weight; normalized within parent at compute time
 
 
+ALLOWED_NODE_TYPES: set[str] = {"influence", "composition"}
+
+
 @dataclass
 class Node:
     """A single node in the influence graph."""
@@ -33,6 +36,9 @@ class Node:
     inputs: list[InputRef] = field(default_factory=list)
     data_source: dict[str, Any] = field(default_factory=dict)
     wishlist: list[str] = field(default_factory=list)
+    # Node role in the model. Blank/None is allowed for genesis nodes
+    # where the distinction doesn't apply yet.
+    node_type: str | None = None
 
     # Derived / runtime fields — not persisted to JSON
     layer: int = 0
@@ -70,16 +76,22 @@ class Graph:
     @classmethod
     def from_json_file(cls, path: str | Path) -> "Graph":
         data = json.loads(Path(path).read_text())
-        nodes = [
-            Node(
+        nodes: list[Node] = []
+        for n in data.get("nodes", []):
+            nt = n.get("node_type")
+            if nt is not None and nt not in ALLOWED_NODE_TYPES:
+                raise GraphError(
+                    f"Node id={n.get('id')} ('{n.get('name')}') has invalid "
+                    f"node_type={nt!r}. Allowed: {sorted(ALLOWED_NODE_TYPES)} or null."
+                )
+            nodes.append(Node(
                 id=n["id"],
                 name=n["name"],
                 inputs=[InputRef(**ref) for ref in n.get("inputs", [])],
                 data_source=n.get("data_source", {}),
                 wishlist=list(n.get("wishlist", [])),
-            )
-            for n in data.get("nodes", [])
-        ]
+                node_type=nt,
+            ))
         return cls(nodes)
 
     # ---- lookup -----------------------------------------------------------

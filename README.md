@@ -35,6 +35,7 @@ Each node represents a quantity (a price, an indicator, etc.) and lives in `node
 - `inputs` — list of `{node_id, node_layer, weight}` pointing to upstream nodes
 - `data_source` — `{type, config}` matching a fetcher in `fetchers.py`
 - `wishlist` — notes for future work on this node
+- `node_type` *(optional)* — `"influence"` or `"composition"`, or omit/null for nodes where the distinction doesn't apply (e.g. the genesis node). Influence nodes render with a light-blue tint; composition nodes with a light-yellow tint.
 
 **Layers are auto-computed** from graph structure (max parent layer + 1). A node with no inputs is layer 1. The graph is a DAG — cycles are rejected at load time.
 
