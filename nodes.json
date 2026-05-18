@@ -50,11 +50,28 @@
       "name": "Market Manipulation intended to rescue stock market",
       "node_type": "composition",
       "prompt": "You are to assume the government will do whatever is necessary but also plausibly deniable to the public in order to keep the stock market high. This specific node is about direct intervention in the market. Potentially with capital. Potentially with trading rules or restrictions.",
-      "inputs": [],
+      "inputs": [
+        {
+          "node_id": 1,
+          "node_layer": 4,
+          "weight": 1.0,
+          "polarity": "power"
+        }
+      ],
       "data_source": null,
       "wishlist": [
-        "Add the sub-node that will compose this one (TBD)"
+        "Add additional sub-nodes (trading rules, capital injections, etc.)"
       ]
+    },
+    {
+      "id": 1,
+      "layer": 4,
+      "name": "Treasury Shorting Paper Oil",
+      "node_type": "composition",
+      "prompt": "The US treasury has the mechanism to short paper oil. This direct intervention in the market is unethical but difficult to prove, and the tools and the Treasury Stabilization Fund exist to make this possible, so we will treat it as possible.",
+      "inputs": [],
+      "data_source": null,
+      "wishlist": []
     }
   ]
 }
