@@ -31,13 +31,16 @@ gladiator/
 Each node represents a quantity (a price, an indicator, etc.) and lives in `nodes.json`. A node has:
 
 - `id` — unique within its layer
+- `layer` — which layer the node lives in (declared explicitly)
 - `name` — display label
-- `inputs` — list of `{node_id, node_layer, weight}` pointing to upstream nodes
-- `data_source` — `{type, config}` matching a fetcher in `fetchers.py`
+- `inputs` — list of `{node_id, node_layer, weight, polarity}` pointing to upstream nodes
+- `data_source` — `{type, config}` matching a fetcher in `fetchers.py`, or `null` for aggregator nodes that don't fetch their own value
 - `wishlist` — notes for future work on this node
 - `node_type` *(optional)* — `"influence"` or `"composition"`, or omit/null for nodes where the distinction doesn't apply (e.g. the genesis node). Influence nodes render with a light-blue tint; composition nodes with a light-yellow tint.
 
-**Layers are auto-computed** from graph structure (max parent layer + 1). A node with no inputs is layer 1. The graph is a DAG — cycles are rejected at load time.
+**Layer convention:** Layer 1 is the root metric (the central thing you care about). Layer 2 is its direct inputs. Layer N+1 is the direct inputs into layer N. Every input must be exactly one layer deeper than the node it feeds. The graph is a DAG by construction.
+
+**Edge polarity:** Each input has `polarity: "power"` (default) or `polarity: "depower"`. A power input pushes its consumer in the same direction; a depower input pushes the opposite way.
 
 To add a new node, edit `nodes.json` and (if needed) add a fetcher in `fetchers.py`. The server reloads the file on every request, so no restart needed.
 

@@ -2,8 +2,16 @@
   "nodes": [
     {
       "id": 1,
+      "layer": 1,
       "name": "WTI Crude Oil",
-      "inputs": [],
+      "inputs": [
+        {
+          "node_id": 1,
+          "node_layer": 2,
+          "weight": 1.0,
+          "polarity": "depower"
+        }
+      ],
       "data_source": {
         "type": "yfinance",
         "config": {
@@ -13,6 +21,18 @@
       "wishlist": [
         "Upgrade to a lower-latency data source (paid feed) so updates are sub-minute instead of 15-minute delayed",
         "Add a sparkline showing the last 24h of price movement"
+      ]
+    },
+    {
+      "id": 1,
+      "layer": 2,
+      "name": "US government attempt to lower paper oil price",
+      "node_type": "influence",
+      "inputs": [],
+      "data_source": null,
+      "wishlist": [
+        "Decide how this aggregator's value is composed from its future child nodes",
+        "Add child nodes (e.g. US bond yield, political pressure indicators)"
       ]
     }
   ]

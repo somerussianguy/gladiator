@@ -35,9 +35,17 @@ def load_graph() -> Graph:
 
 def refresh_node_values(graph: Graph) -> None:
     """Fetch current values for every node. Errors are captured on the node,
-    not raised, so one bad source doesn't blank the whole dashboard."""
+    not raised, so one bad source doesn't blank the whole dashboard.
+    Nodes with no data_source (aggregators waiting on composition logic, etc.)
+    are skipped and marked 'no_source'."""
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
     for node in graph.nodes:
+        if not node.data_source or not node.data_source.get("type"):
+            node.current_value = None
+            node.last_status = "no_source"
+            node.last_error = None
+            node.last_updated = now_iso
+            continue
         try:
             node.current_value = fetch(node.data_source)
             node.last_status = "ok"
