@@ -1,10 +1,14 @@
 :root {
     --bg: #0f1115;
     --surface: #1a1d24;
+    --surface-2: #232730;
     --border: #2a2f3a;
     --text: #e6e8ec;
     --text-dim: #9aa3b2;
+    --text-faint: #6b7280;
     --accent: #5b9dff;
+    --ok: #4ade80;
+    --error: #f87171;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,6 +21,9 @@ body {
 }
 
 .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 1.25rem 2rem;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
@@ -28,33 +35,86 @@ body {
     letter-spacing: -0.01em;
 }
 
+.topbar-right {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+#refresh-state { color: var(--ok); }
+
 .container {
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
-.metrics {
+.layer {
+    margin-bottom: 2rem;
+}
+
+.layer-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    margin-bottom: 0.75rem;
+    padding-left: 0.25rem;
+}
+
+.nodes {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1rem;
 }
 
-.card {
+.node {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
+    transition: border-color 0.15s;
 }
 
-.card-label {
-    font-size: 0.85rem;
-    color: var(--text-dim);
+.node:hover {
+    border-color: var(--accent);
+}
+
+.node-error {
+    border-color: var(--error);
+    background: linear-gradient(180deg, var(--surface), rgba(248,113,113,0.04));
+}
+
+.node-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
     margin-bottom: 0.5rem;
 }
 
-.card-value {
+.node-name {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-weight: 500;
+}
+
+.node-id {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.node-value {
     font-size: 1.75rem;
     font-weight: 600;
     letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
 }
+
+.node-meta {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.status-ok { color: var(--text-faint); }
+.status-error { color: var(--error); }

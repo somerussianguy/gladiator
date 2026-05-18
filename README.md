@@ -12,18 +12,33 @@ A localhost HTML dashboard built with Flask.
 
 ```
 gladiator/
-├── app.py              # Flask app entry point
+├── app.py              # Flask app: routes, fetch orchestration
+├── graph.py            # Node + Graph classes, layer computation, cycle check
+├── fetchers.py         # Data source functions (yfinance, manual, ...)
+├── nodes.json          # Graph definition — edit this to add/modify nodes
 ├── requirements.txt    # Python dependencies
-├── templates/          # Jinja2 HTML templates
-│   └── index.html
-├── static/             # CSS, JS, images
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       └── main.js
+├── templates/
+│   └── index.html      # Dashboard page (renders nodes by layer)
+├── static/
+│   ├── css/style.css
+│   └── js/main.js      # Polls /api/nodes every 60s
 ├── .gitignore
 └── README.md
 ```
+
+## How the graph works
+
+Each node represents a quantity (a price, an indicator, etc.) and lives in `nodes.json`. A node has:
+
+- `id` — unique within its layer
+- `name` — display label
+- `inputs` — list of `{node_id, node_layer, weight}` pointing to upstream nodes
+- `data_source` — `{type, config}` matching a fetcher in `fetchers.py`
+- `wishlist` — notes for future work on this node
+
+**Layers are auto-computed** from graph structure (max parent layer + 1). A node with no inputs is layer 1. The graph is a DAG — cycles are rejected at load time.
+
+To add a new node, edit `nodes.json` and (if needed) add a fetcher in `fetchers.py`. The server reloads the file on every request, so no restart needed.
 
 ## Setup (Windows)
 

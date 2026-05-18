@@ -9,17 +9,42 @@
 <body>
     <header class="topbar">
         <h1>Gladiator</h1>
+        <div class="topbar-right">
+            <span id="refresh-status">auto-refresh: <span id="refresh-state">on</span></span>
+        </div>
     </header>
 
     <main class="container">
-        <section class="metrics">
-            {% for m in metrics %}
-            <div class="card">
-                <div class="card-label">{{ m.label }}</div>
-                <div class="card-value">{{ m.value }}</div>
+        {% for layer_num, nodes in layers %}
+        <section class="layer">
+            <div class="layer-label">Layer {{ layer_num }}</div>
+            <div class="nodes">
+                {% for node in nodes %}
+                <article class="node {% if node.last_status == 'error' %}node-error{% endif %}"
+                         data-global-id="{{ node.global_id }}">
+                    <div class="node-header">
+                        <span class="node-name">{{ node.name }}</span>
+                        <span class="node-id">{{ node.global_id }}</span>
+                    </div>
+                    <div class="node-value">
+                        {% if node.current_value is not none %}
+                            ${{ "%.2f"|format(node.current_value) }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </div>
+                    <div class="node-meta">
+                        {% if node.last_status == 'error' %}
+                            <span class="status status-error">error: {{ node.last_error }}</span>
+                        {% else %}
+                            <span class="status status-ok">updated {{ node.last_updated }}</span>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
             </div>
-            {% endfor %}
         </section>
+        {% endfor %}
     </main>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

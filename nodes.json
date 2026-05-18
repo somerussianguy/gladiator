@@ -1,0 +1,19 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "name": "WTI Crude Oil",
+      "inputs": [],
+      "data_source": {
+        "type": "yfinance",
+        "config": {
+          "ticker": "CL=F"
+        }
+      },
+      "wishlist": [
+        "Upgrade to a lower-latency data source (paid feed) so updates are sub-minute instead of 15-minute delayed",
+        "Add a sparkline showing the last 24h of price movement"
+      ]
+    }
+  ]
+}
