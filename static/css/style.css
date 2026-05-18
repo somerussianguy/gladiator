@@ -11,6 +11,9 @@
     --error: #f87171;
     --edge-power: #4ade80;
     --edge-depower: #f87171;
+    /* Composition edges are structural, not directional — neutral gray
+       (not pure black, which gets lost on the dark theme). */
+    --edge-composition: #b8c0cc;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -72,6 +75,9 @@ body {
 }
 #edge-overlay .edge-power   { stroke: var(--edge-power); }
 #edge-overlay .edge-depower { stroke: var(--edge-depower); }
+/* Composition edges override polarity color — they're structural, not
+   "powering" or "depowering" the consumer. */
+#edge-overlay .edge-composition { stroke: var(--edge-composition); }
 
 /* Line style is determined by the consumer node's type:
    influence consumer  -> dashed (looser, more indirect association)

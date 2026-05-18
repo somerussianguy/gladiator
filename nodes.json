@@ -30,11 +30,30 @@
       "name": "US government attempt to lower paper oil price",
       "node_type": "influence",
       "prompt": "The US government has a vested interest in keeping the price of paper oil on the lower side to avoid a panic in the stock market. You will scout the underlying composition and influence nodes in the deeper layers of this model and you will give a likelihood from 1-10 that the US government is about to do something to lower the oil price.",
-      "inputs": [],
+      "inputs": [
+        {
+          "node_id": 1,
+          "node_layer": 3,
+          "weight": 1.0,
+          "polarity": "power"
+        }
+      ],
       "data_source": null,
       "wishlist": [
         "Decide how this aggregator's value is composed from its future child nodes",
         "Add child nodes (e.g. US bond yield, political pressure indicators)"
+      ]
+    },
+    {
+      "id": 1,
+      "layer": 3,
+      "name": "Market Manipulation intended to rescue stock market",
+      "node_type": "composition",
+      "prompt": "You are to assume the government will do whatever is necessary but also plausibly deniable to the public in order to keep the stock market high. This specific node is about direct intervention in the market. Potentially with capital. Potentially with trading rules or restrictions.",
+      "inputs": [],
+      "data_source": null,
+      "wishlist": [
+        "Add the sub-node that will compose this one (TBD)"
       ]
     }
   ]

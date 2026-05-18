@@ -59,13 +59,17 @@ async function refresh() {
 // the input card and lands on the bottom of the consumer card.
 
 function ensureArrowMarkers(svg) {
-    // Create one <defs> with two markers (power = green, depower = red).
-    // The marker uses fill via context-stroke so it picks up the path color.
+    // Create one <defs> with markers for each edge color variant.
     if (svg.querySelector("defs")) return;
     const defs = document.createElementNS(SVG_NS, "defs");
-    for (const polarity of ["power", "depower"]) {
+    const variants = [
+        ["power", "var(--edge-power)"],
+        ["depower", "var(--edge-depower)"],
+        ["composition", "var(--edge-composition)"],
+    ];
+    for (const [name, color] of variants) {
         const marker = document.createElementNS(SVG_NS, "marker");
-        marker.setAttribute("id", `arrow-${polarity}`);
+        marker.setAttribute("id", `arrow-${name}`);
         marker.setAttribute("viewBox", "0 0 10 10");
         marker.setAttribute("refX", "9");
         marker.setAttribute("refY", "5");
@@ -74,10 +78,7 @@ function ensureArrowMarkers(svg) {
         marker.setAttribute("orient", "auto-start-reverse");
         const path = document.createElementNS(SVG_NS, "path");
         path.setAttribute("d", "M 0 0 L 10 5 L 0 10 z");
-        path.setAttribute(
-            "fill",
-            polarity === "power" ? "var(--edge-power)" : "var(--edge-depower)"
-        );
+        path.setAttribute("fill", color);
         marker.appendChild(path);
         defs.appendChild(marker);
     }
@@ -150,12 +151,16 @@ function drawEdges() {
                 "d",
                 `M ${startX} ${startY} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${endX} ${endY}`
             );
-            const polarityClass = inp.polarity === "depower" ? "edge-depower" : "edge-power";
-            path.setAttribute("class", `edge ${polarityClass} ${styleClass}`);
-            path.setAttribute(
-                "marker-end",
-                `url(#arrow-${inp.polarity === "depower" ? "depower" : "power"})`
-            );
+
+            // Composition upstream overrides polarity color — composition
+            // is structural, not directional. For influence/genesis upstreams,
+            // polarity drives color (green power, red depower).
+            const colorVariant =
+                sourceType === "composition"   ? "composition" :
+                inp.polarity === "depower"     ? "depower" :
+                                                 "power";
+            path.setAttribute("class", `edge edge-${colorVariant} ${styleClass}`);
+            path.setAttribute("marker-end", `url(#arrow-${colorVariant})`);
             svg.appendChild(path);
         }
     }

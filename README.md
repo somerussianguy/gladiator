@@ -46,7 +46,7 @@ Each node represents a quantity (a price, an indicator, etc.) and lives in `node
 **Visual conventions on the dashboard:**
 
 - **Card tint** comes from the node's `node_type`: influence = light blue, composition = light yellow, genesis = light purple.
-- **Edge color** comes from polarity: power = green, depower = red.
+- **Edge color** comes from polarity for influence/genesis upstreams: power = green, depower = red. **Composition upstreams override this** — composition edges are always neutral gray, since composition is structural rather than directional. The `polarity` field is still required on the input but is ignored for color when the upstream is a composition node.
 - **Edge line style** comes from the *upstream* (input) node's `node_type`: influence upstream = dashed (looser, more indirect association), composition upstream = solid (tighter, more direct). The genesis node is never an input to anything, so its style doesn't appear on edges.
 - **Arrows** point *into* the consumer (downstream node).
 
