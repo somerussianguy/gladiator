@@ -37,6 +37,7 @@ Each node represents a quantity (a price, an indicator, etc.) and lives in `node
 - `data_source` — `{type, config}` matching a fetcher in `fetchers.py`, or `null` for aggregator nodes that don't fetch their own value
 - `wishlist` — notes for future work on this node
 - `node_type` *(optional)* — `"influence"` or `"composition"`, or omit/null for nodes where the distinction doesn't apply (e.g. the genesis node). Influence nodes render with a light-blue tint; composition nodes with a light-yellow tint.
+- `prompt` *(optional)* — an instruction string for an LLM that will eventually compute this node's value (e.g. by scouting its child nodes). Shown as a collapsible "prompt" section on the card. Not all nodes need one — raw data sources like price tickers typically don't. The LLM execution side isn't wired up yet; for now this just stores and displays the prompt.
 
 **Layer convention:** Layer 1 is the root metric (the central thing you care about). Layer 2 is its direct inputs. Layer N+1 is the direct inputs into layer N. Every input must be exactly one layer deeper than the node it feeds. The graph is a DAG by construction.
 

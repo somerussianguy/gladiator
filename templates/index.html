@@ -29,7 +29,11 @@
                     </div>
                     <div class="node-value">
                         {% if node.current_value is not none %}
-                            ${{ "%.2f"|format(node.current_value) }}
+                            {% if node.data_source and node.data_source.type == 'yfinance' %}
+                                ${{ "%.2f"|format(node.current_value) }}
+                            {% else %}
+                                {{ "%.2f"|format(node.current_value) }}
+                            {% endif %}
                         {% else %}
                             —
                         {% endif %}
@@ -37,10 +41,18 @@
                     <div class="node-meta">
                         {% if node.last_status == 'error' %}
                             <span class="status status-error">error: {{ node.last_error }}</span>
+                        {% elif node.last_status == 'no_source' %}
+                            <span class="status status-faint">no data source</span>
                         {% else %}
                             <span class="status status-ok">updated {{ node.last_updated }}</span>
                         {% endif %}
                     </div>
+                    {% if node.prompt %}
+                    <details class="node-prompt">
+                        <summary>prompt</summary>
+                        <p>{{ node.prompt }}</p>
+                    </details>
+                    {% endif %}
                 </article>
                 {% endfor %}
             </div>

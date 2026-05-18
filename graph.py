@@ -55,6 +55,9 @@ class Node:
     data_source: dict[str, Any] | None = field(default_factory=dict)
     wishlist: list[str] = field(default_factory=list)
     node_type: str | None = None
+    # Optional instruction for an LLM to compute this node's value by scouting
+    # its child nodes. Not all nodes need one (raw price nodes typically don't).
+    prompt: str | None = None
 
     # Runtime fields — populated by the fetcher, not persisted.
     current_value: float | None = None
@@ -119,6 +122,7 @@ class Graph:
                 data_source=n.get("data_source") or {},
                 wishlist=list(n.get("wishlist", [])),
                 node_type=nt,
+                prompt=n.get("prompt"),
             ))
         return cls(nodes)
 

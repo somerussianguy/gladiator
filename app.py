@@ -79,6 +79,7 @@ def api_nodes():
                 "layer": n.layer,
                 "name": n.name,
                 "node_type": n.node_type,
+                "prompt": n.prompt,
                 "current_value": n.current_value,
                 "last_updated": n.last_updated,
                 "last_status": n.last_status,

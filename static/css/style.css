@@ -148,3 +148,49 @@ body {
 
 .status-ok { color: var(--text-faint); }
 .status-error { color: var(--error); }
+.status-faint { color: var(--text-faint); font-style: italic; }
+
+.node-prompt {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--border);
+}
+
+.node-prompt summary {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.node-prompt summary::-webkit-details-marker { display: none; }
+
+.node-prompt summary::before {
+    content: "▸";
+    font-size: 0.65rem;
+    color: var(--text-faint);
+    transition: transform 0.15s;
+    display: inline-block;
+}
+
+.node-prompt[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.node-prompt summary:hover {
+    color: var(--text-dim);
+}
+
+.node-prompt p {
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: var(--text-dim);
+    white-space: pre-wrap;
+}

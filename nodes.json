@@ -28,6 +28,7 @@
       "layer": 2,
       "name": "US government attempt to lower paper oil price",
       "node_type": "influence",
+      "prompt": "The US government has a vested interest in keeping the price of paper oil on the lower side to avoid a panic in the stock market. You will scout the underlying composition and influence nodes in the deeper layers of this model and you will give a likelihood from 1-10 that the US government is about to do something to lower the oil price.",
       "inputs": [],
       "data_source": null,
       "wishlist": [
