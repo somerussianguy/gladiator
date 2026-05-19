@@ -52,6 +52,12 @@ Each node represents a quantity (a price, an indicator, etc.) and lives in `node
 
 To add a new node, edit `nodes.json` and (if needed) add a fetcher in `fetchers.py`. The server reloads the file on every request, so no restart needed.
 
+### Available fetchers
+
+- `yfinance` — Latest price for a Yahoo Finance ticker. Config: `{"ticker": "CL=F"}`. Values render with a `$` prefix on the card.
+- `yfinance_activity` — Activity multiplier for a ticker: today's `price × volume` divided by the rolling N-day average. `1.0` means activity matches the baseline; `1.5` means 50% above norm; `0.7` means quiet. Config: `{"ticker": "CL=F", "lookback_days": 30}`. Values render with a `×` suffix. Useful as a free-data proxy for "how much money is chasing this asset right now" — not true order flow, but the best one number you can derive from free OHLCV.
+- `manual` — Returns a fixed value from config. Useful for placeholders. Config: `{"value": 42}`.
+
 ## Setup (Windows)
 
 ### 1. Install Python

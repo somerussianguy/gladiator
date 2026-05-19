@@ -86,9 +86,36 @@
       "name": "Difficulty for treasury to sustain shorting operation",
       "node_type": "influence",
       "prompt": "The treasury must stay under the radar while doing these operations. As such it cannot always come to the rescue, but with other tools in the US government's arsenal it doesn't always have to.",
-      "inputs": [],
+      "inputs": [
+        {
+          "node_id": 1,
+          "node_layer": 6,
+          "weight": 1.0,
+          "polarity": "power"
+        }
+      ],
       "data_source": null,
-      "wishlist": []
+      "wishlist": [
+        "Add the second composition sub-node (TBD)"
+      ]
+    },
+    {
+      "id": 1,
+      "layer": 6,
+      "name": "Expense of the operation",
+      "node_type": "composition",
+      "prompt": "The expense to cap paper oil prices in a bull market is not trivial. Earlier we calculated this to be about a billion dollars a day. However that is without the aid of media manipulation which would both force others to sell on narrative shaping about de-escalation and potentially give the treasury a chance to short sell and recoup its losses from keeping prices down earlier. Your job is to recalculate what that cost is currently based on current paper oil price and volume of buying pressure.",
+      "inputs": [],
+      "data_source": {
+        "type": "yfinance_activity",
+        "config": {
+          "ticker": "CL=F",
+          "lookback_days": 30
+        }
+      },
+      "wishlist": [
+        "Activity multiplier is a free-data proxy; consider upgrading to true order-flow or COT positioning data later"
+      ]
     }
   ]
 }

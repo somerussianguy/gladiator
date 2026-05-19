@@ -10,8 +10,10 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 function formatValue(node) {
     const v = node.current_value;
     if (v === null || v === undefined) return "—";
-    const isCurrency = node.data_source && node.data_source.type === "yfinance";
-    return (isCurrency ? "$" : "") + Number(v).toFixed(2);
+    const type = node.data_source && node.data_source.type;
+    if (type === "yfinance") return "$" + Number(v).toFixed(2);
+    if (type === "yfinance_activity") return Number(v).toFixed(2) + "×";
+    return Number(v).toFixed(2);
 }
 
 function updateNodeCard(node) {

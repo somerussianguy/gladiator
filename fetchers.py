@@ -87,3 +87,41 @@ def fetch_manual(config: dict[str, Any]) -> float:
     if value is None:
         raise ValueError("manual fetcher requires 'value' in config")
     return float(value)
+
+
+@register("yfinance_activity")
+def fetch_yfinance_activity(config: dict[str, Any]) -> float:
+    """Activity multiplier for a Yahoo Finance ticker.
+
+    Returns (today's price * today's volume) / (30-day average of price * volume).
+    A value of 1.0 means activity matches the 30-day norm; 1.5 means 50% above;
+    0.7 means quiet. Captures both price level and trading intensity in one number.
+
+    Config: {"ticker": "CL=F", "lookback_days": 30}   # lookback defaults to 30
+    """
+    import yfinance as yf
+
+    ticker_sym = config.get("ticker")
+    lookback = int(config.get("lookback_days", 30))
+    if not ticker_sym:
+        raise ValueError("yfinance_activity config requires 'ticker'")
+    if lookback < 5:
+        raise ValueError("yfinance_activity lookback_days must be >= 5")
+
+    t = yf.Ticker(ticker_sym)
+    # Pull enough daily bars to cover the lookback plus today.
+    hist = t.history(period=f"{lookback + 5}d", interval="1d")
+    if hist.empty or len(hist) < 2:
+        raise RuntimeError(
+            f"Not enough daily history for '{ticker_sym}' to compute activity"
+        )
+
+    # Use price * volume per bar (notional traded value).
+    pv = hist["Close"] * hist["Volume"]
+    today_pv = float(pv.iloc[-1])
+    baseline = float(pv.iloc[-(lookback + 1):-1].mean())  # last `lookback` bars before today
+    if baseline <= 0:
+        raise RuntimeError(
+            f"Baseline activity for '{ticker_sym}' is zero — can't compute ratio"
+        )
+    return today_pv / baseline
