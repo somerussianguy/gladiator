@@ -69,6 +69,23 @@
       "name": "Treasury Shorting Paper Oil",
       "node_type": "composition",
       "prompt": "The US treasury has the mechanism to short paper oil. This direct intervention in the market is unethical but difficult to prove, and the tools and the Treasury Stabilization Fund exist to make this possible, so we will treat it as possible.",
+      "inputs": [
+        {
+          "node_id": 1,
+          "node_layer": 5,
+          "weight": 1.0,
+          "polarity": "depower"
+        }
+      ],
+      "data_source": null,
+      "wishlist": []
+    },
+    {
+      "id": 1,
+      "layer": 5,
+      "name": "Difficulty for treasury to sustain shorting operation",
+      "node_type": "influence",
+      "prompt": "The treasury must stay under the radar while doing these operations. As such it cannot always come to the rescue, but with other tools in the US government's arsenal it doesn't always have to.",
       "inputs": [],
       "data_source": null,
       "wishlist": []
